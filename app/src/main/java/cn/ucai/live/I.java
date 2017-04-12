@@ -286,4 +286,39 @@ public interface I {
      * 客户端发送的分页下载附近的人的请求
      */
     String REQUEST_DOWNLOAD_LOCATION = "downloadLocation";
+    /** 客户端发送的全部礼物信息并展示，包括礼物的名称、图片地址和价格的请求 */
+    String REQUEST_ALL_GIFTS		 				= 		"live/getAllGifts";
+    /** 客户端发送的分页加载充值流水的请求 */
+    String REQUEST_RECHARGE_STATEMENTS_PAGE 		= 		"live/getRechargeStatements";
+    /** 客户端发送的根据用户名获取账户余额的请求 */
+    String REQUEST_BALANCE			 				= 		"live/getBalance";
+    /** 客户端发送的统计主播收到礼物的次数、数量及礼物信息等的请求 */
+    String REQUEST_ANCHOR_GIFT		 				= 		"live/getGiftStatementsByAnchor";
+    /** 客户端发送的用户给主播赠送礼物的请求 */
+    String REQUEST_GIVING_GIFT		 				= 		"live/givingGifts";
+    /** 客户端发送的用户充值的请求 */
+    String REQUEST_RECHARGE			 				= 		"live/recharge";
+    /** 客户端发送的用户给主播赠送礼物的请求 */
+    String REQUEST_GET_ALL_CHATROOM		 			= 		"live/getAllChatRoom";
+    /** 客户端发送的创建直播室 */
+    String REQUEST_CREATE_CHATROOM		 			= 		"live/createChatRoom";
+    /** 客户端发送的删除直播室 */
+    String REQUEST_DELETE_CHATROOM		 			= 		"live/deleteChatRoom";
+    /** 客户端分页加载送礼物流水 */
+    String REQUEST_GIVING_GIFT_STATEMENT			= 		"live/getGivingGiftStatements";
+    /** 客户端分页加载主播收礼物流水 */
+    String REQUEST_RECEIVING_GIFT_STATEMENT		 	= 		"live/getReceivingGiftStatementsServlet";
+
+
+    String BACK_MAIN_FROM_CHAT						= 		"back_main_from_chat";
+
+
+    int REQUESTCODE_PICK = 1;
+    int REQUESTCODE_CUTTING = 2;
+    int REQUESTCODE_MEMBER = 3;
+    int GIFT_COLUMN_COUNT = 4;
+    String GIFT_STATEMENT_TYPE = "cn.ucai.live_gift_statement_type";
+    int GIFT_STATEMENT_TYPE_GIBVING = 0;
+    int GIFT_STATEMENT_TYPE_RECEIVING = 1;
+
 }
