@@ -21,6 +21,8 @@ import com.easemob.livedemo.R;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
+import cn.ucai.live.utils.MD5;
+
 /**
  * A login screen that offers login via email/text_password.
  */
@@ -120,7 +122,7 @@ public class LoginActivity extends BaseActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            EMClient.getInstance().login(email.toString(), password.toString(), new EMCallBack() {
+            EMClient.getInstance().login(email.toString(), MD5.getMessageDigest(password.toString()), new EMCallBack() {
                 @Override
                 public void onSuccess() {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
