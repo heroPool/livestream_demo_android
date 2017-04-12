@@ -22,7 +22,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via email/text_password.
  */
 public class LoginActivity extends BaseActivity {
 
@@ -98,7 +98,7 @@ public class LoginActivity extends BaseActivity {
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
+        // Check for a valid text_password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
