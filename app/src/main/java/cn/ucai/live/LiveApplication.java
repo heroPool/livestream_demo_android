@@ -25,7 +25,7 @@ public class LiveApplication extends Application {
         instance = this;
 
           //init demo helper
-          //SuperWeChatHelper.getInstance().init(applicationContext);
+          //LiveHelper.getInstance().init(applicationContext);
         initChatSdk();
 
         //UEasyStreaming.initStreaming("publish3-key");
