@@ -68,7 +68,7 @@ public class RegisterActivity extends BaseActivity {
                 final String username = text_username.getText().toString().trim();
                 final String pwd = text_password.getText().toString().trim();
                 final String password = MD5.getMessageDigest(pwd);
-                String confirm_pwd = confirmPassword.getText().toString().trim();
+                String confirm_pwd = MD5.getMessageDigest(confirmPassword.getText().toString().trim());
                 if (inputCheck(usernick, username, password, confirm_pwd)) return;
 //                if (TextUtils.isEmpty(usernick.getText())) {
 //                    showToast("昵称不能为空");
