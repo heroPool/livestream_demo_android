@@ -24,6 +24,7 @@ import cn.ucai.live.net.OnCompleteListener;
 import cn.ucai.live.net.UserRegisterModel;
 import cn.ucai.live.utils.CommonUtils;
 import cn.ucai.live.utils.MD5;
+import cn.ucai.live.utils.PreferenceManager;
 import cn.ucai.live.utils.Result;
 import cn.ucai.live.utils.ResultUtils;
 
@@ -151,6 +152,8 @@ public class RegisterActivity extends BaseActivity {
                         public void run() {
                             pd.dismiss();
                             showToast("注册成功");
+                            PreferenceManager.getInstance().setCurrentUserName(username);
+
                             startActivity(new Intent(RegisterActivity.this, LoginActivity.class)
                                     .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
                             finish();

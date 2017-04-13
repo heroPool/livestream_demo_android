@@ -22,6 +22,7 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
 import cn.ucai.live.utils.MD5;
+import cn.ucai.live.utils.PreferenceManager;
 
 /**
  * A login screen that offers login via email/text_password.
@@ -78,7 +79,10 @@ public class LoginActivity extends BaseActivity {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
+        if (PreferenceManager.getInstance().getCurrentUsername() != null) {
+            mEmailView.setText(PreferenceManager.getInstance().getCurrentUsername());
 
+        }
 
     }
 
@@ -88,13 +92,14 @@ public class LoginActivity extends BaseActivity {
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
+    Editable email;
     private void attemptLogin() {
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        Editable email = mEmailView.getText();
+         email = mEmailView.getText();
         Editable password = mPasswordView.getText();
 
         boolean cancel = false;
