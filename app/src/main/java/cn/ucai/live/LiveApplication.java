@@ -27,6 +27,7 @@ public class LiveApplication extends Application {
           //init demo helper
           //LiveHelper.getInstance().init(applicationContext);
         initChatSdk();
+        LiveHelper.getInstance().init(this);
 
         //UEasyStreaming.initStreaming("publish3-key");
 
