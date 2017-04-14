@@ -65,7 +65,7 @@ public class LiveHelper {
         //use default options if options is null
         if (EaseUI.getInstance().init(context, null)) {
             appContext = context;
-
+            
             //debug mode, you'd better set it to false, if you want release your App officially.
             EMClient.getInstance().setDebugMode(true);
             //get easeui instance
@@ -140,7 +140,7 @@ public class LiveHelper {
         intent.putExtra(exception, true);
         appContext.startActivity(intent);
     }
-    
+
     private User getAppUserInfo(String username) {
         // To get instance of EaseUser, here we get it from the user list in memory
         // You'd better cache it if you get it from your server
@@ -151,7 +151,7 @@ public class LiveHelper {
         // if user is not in your contacts, set inital letter for him/her
         if (user == null) {
             user = new User(username);
-            EaseCommonUtils.setUserAInitialLetter(user);
+            EaseCommonUtils.setAppUserInitialLetter(user);
         }
         return user;
     }

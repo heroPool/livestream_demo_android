@@ -21,6 +21,7 @@ import com.easemob.livedemo.R;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
+import cn.ucai.live.LiveHelper;
 import cn.ucai.live.utils.MD5;
 import cn.ucai.live.utils.PreferenceManager;
 
@@ -93,13 +94,14 @@ public class LoginActivity extends BaseActivity {
      * errors are presented and no actual login attempt is made.
      */
     Editable email;
+
     private void attemptLogin() {
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-         email = mEmailView.getText();
+        email = mEmailView.getText();
         Editable password = mPasswordView.getText();
 
         boolean cancel = false;
@@ -130,6 +132,9 @@ public class LoginActivity extends BaseActivity {
             EMClient.getInstance().login(email.toString(), MD5.getMessageDigest(password.toString()), new EMCallBack() {
                 @Override
                 public void onSuccess() {
+                    PreferenceManager.getInstance().setCurrentUserName(EMClient.getInstance().getCurrentUser());
+                    LiveHelper.getInstance().getUserProfileManager().asyncGetAppCurrentUserInfo();
+                    
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                 }
