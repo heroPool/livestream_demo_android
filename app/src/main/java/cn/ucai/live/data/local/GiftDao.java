@@ -1,9 +1,14 @@
 package cn.ucai.live.data.local;
 
+import android.os.DropBoxManager;
+
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.domain.User;
 
 import java.util.List;
+import java.util.Map;
+
+import cn.ucai.live.data.model.Gift;
 
 /**
  * Created by Administrator on 2017/4/14.
@@ -27,4 +32,20 @@ public class GiftDao {
     public static final String GIFT_COLUMN_URL = "m_gift_url";
     public static final String GIFT_COLUMN_PRICE = "m_gift_price";
 
+
+    public GiftDao() {
+
+    }
+
+    /**
+     * @param giftList
+     */
+    public void saveAppGiftList(List<Gift> giftList) {
+        LiveDBManager.getInstance().saveAppGiftList(giftList);
+
+    }
+
+    public Map<Integer, Gift> getAppList() {
+        return LiveDBManager.getInstance().getAppGiftList();
+    }
 }

@@ -139,14 +139,16 @@ public class ApiManager {
         return null;
     }
 
-    public void createLiveRoom(String auth, String name, String description, String owner, int maxusers, String members) {
+    public String createLiveRoom(String auth, String name, String description, String owner, int maxusers, String members) throws IOException {
         Call<String> call = liveService.createLiveRoom(auth, name, description, owner, maxusers, members);
-
+        Response<String> response = call.execute();
+        return ResultUtils.getEMResultFromJson(response.body());
     }
 
-    public void createLiveRoom(String name, String description) {
-        createLiveRoom("1IFgE", name, description, EMClient.getInstance().getCurrentUser(), 300, EMClient.getInstance().getCurrentUser());
+    public String createLiveRoom(String name, String description) throws IOException {
+        return createLiveRoom("1IFgE", name, description, EMClient.getInstance().getCurrentUser(), 300, EMClient.getInstance().getCurrentUser());
     }
+
     public LiveRoom createLiveRoom(String name, String description, String coverUrl) throws LiveException {
         return createLiveRoomWithRequest(name, description, coverUrl, null);
     }
@@ -162,24 +164,19 @@ public class ApiManager {
         liveRoom.setAnchorId(EMClient.getInstance().getCurrentUser());
         liveRoom.setCover(coverUrl);
 
-        Call<ResponseModule<LiveRoom>> responseCall;
-        if (liveRoomId != null) {
-            responseCall = apiService.createLiveShow(liveRoomId, liveRoom);
+        try {
+            String id = createLiveRoom(name, description);
+            if (id != null) {
+                liveRoom.setId(id);
+                liveRoom.setChatroomId(id);
+            } else {
+                liveRoom.setId(liveRoomId);
 
-        } else {
-            responseCall = apiService.createLiveRoom(liveRoom);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        ResponseModule<LiveRoom> response = handleResponseCall(responseCall).body();
-        LiveRoom room = response.data;
-        if (room.getId() != null) {
-            liveRoom.setId(room.getId());
-        } else {
-            liveRoom.setId(liveRoomId);
-        }
-        liveRoom.setChatroomId(room.getChatroomId());
-        //liveRoom.setAudienceNum(1);
-        liveRoom.setLivePullUrl(room.getLivePullUrl());
-        liveRoom.setLivePushUrl(room.getLivePushUrl());
+
         return liveRoom;
     }
 

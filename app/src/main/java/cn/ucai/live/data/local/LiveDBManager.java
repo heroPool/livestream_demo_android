@@ -67,4 +67,11 @@ public class LiveDBManager {
         }
         return gifts;
     }
+    synchronized public void closeDB() {
+        if (dbHelper != null) {
+            dbHelper.closeDB();
+
+        }
+        dbMgr = null;
+    }
 }

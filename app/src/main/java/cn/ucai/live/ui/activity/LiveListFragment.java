@@ -27,7 +27,6 @@ import butterknife.ButterKnife;
 import cn.ucai.live.ThreadPoolManager;
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.ApiManager;
-import cn.ucai.live.data.restapi.LiveException;
 import cn.ucai.live.data.restapi.model.ResponseModule;
 import cn.ucai.live.ui.GridMarginDecoration;
 
@@ -85,13 +84,13 @@ public class LiveListFragment extends Fragment {
 
     }
 
-    private void loadGiftList() {
-        try {
-            ApiManager.get().getAllGifts();
-        } catch (LiveException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void loadGiftList() {
+//        try {
+//            ApiManager.get().getAllGifts();
+//        } catch (LiveException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void showLiveList(final boolean isLoadMore) {
         if (!isLoadMore)
@@ -99,7 +98,6 @@ public class LiveListFragment extends Fragment {
         else
             loadmorePB.setVisibility(View.VISIBLE);
         isLoading = true;
-        loadGiftList();
         ThreadPoolManager.getInstance().executeTask(new ThreadPoolManager.Task<ResponseModule<List<LiveRoom>>>() {
             @Override
             public ResponseModule<List<LiveRoom>> onRequest() throws HyphenateException {

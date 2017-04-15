@@ -16,7 +16,15 @@ import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.util.EMLog;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import cn.ucai.live.data.UserProfileManager;
+import cn.ucai.live.data.local.LiveDBManager;
+import cn.ucai.live.data.model.Gift;
+import cn.ucai.live.data.restapi.ApiManager;
+import cn.ucai.live.data.restapi.LiveException;
 import cn.ucai.live.net.IUserRegisterModel;
 import cn.ucai.live.net.UserRegisterModel;
 import cn.ucai.live.ui.activity.MainActivity;
@@ -37,7 +45,7 @@ public class LiveHelper {
     private LiveModel demoModel = null;
 
     private String username;
-
+    private Map<Integer, Gift> giftList;
     private Context appContext;
 
     private IUserRegisterModel userModel;
@@ -65,7 +73,7 @@ public class LiveHelper {
         //use default options if options is null
         if (EaseUI.getInstance().init(context, null)) {
             appContext = context;
-            
+
             //debug mode, you'd better set it to false, if you want release your App officially.
             EMClient.getInstance().setDebugMode(true);
             //get easeui instance
@@ -252,6 +260,40 @@ public class LiveHelper {
 
     synchronized void reset() {
         getUserProfileManager().reset();
+        LiveDBManager.getInstance().closeDB();
+
+    }
+
+    public Map<Integer, Gift> getGiftList() {
+        if (giftList == null) {
+             giftList = demoModel.getGiftList();
+
+        }
+        if (giftList == null) {
+            giftList = new HashMap<Integer, Gift>();
+        }
+        return giftList;
+    }
+
+    public void syncLoadGiftList() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<Gift> list = ApiManager.get().getAllGifts();
+                    if (list != null && list.size() > 0) {
+                        //保存到数据库
+                        demoModel.setGift(list);
+                        //保存到缓存
+                        for (Gift gift : list) {
+                            getGiftList().put(gift.getId(), gift);
+                        }
+                    }
+                } catch (LiveException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
 }

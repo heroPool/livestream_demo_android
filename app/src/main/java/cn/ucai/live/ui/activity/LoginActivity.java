@@ -134,6 +134,7 @@ public class LoginActivity extends BaseActivity {
                 public void onSuccess() {
                     PreferenceManager.getInstance().setCurrentUserName(EMClient.getInstance().getCurrentUser());
                     LiveHelper.getInstance().getUserProfileManager().asyncGetAppCurrentUserInfo();
+                    LiveHelper.getInstance().syncLoadGiftList();
 
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();

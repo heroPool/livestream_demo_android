@@ -11,24 +11,26 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import cn.ucai.live.data.restapi.ApiManager;
 
 import com.easemob.livedemo.R;
-import cn.ucai.live.ThreadPoolManager;
-import cn.ucai.live.data.model.LiveRoom;
-
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.cloud.EMCloudOperationCallback;
 import com.hyphenate.cloud.HttpFileManager;
 import com.hyphenate.exceptions.HyphenateException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import cn.ucai.live.ThreadPoolManager;
+import cn.ucai.live.data.model.LiveRoom;
+import cn.ucai.live.data.restapi.ApiManager;
 
 public class CreateLiveRoomActivity extends BaseActivity {
 
@@ -118,6 +120,7 @@ public class CreateLiveRoomActivity extends BaseActivity {
                     throw exception;
                 }
                 return ApiManager.get().createLiveRoom(name, desc, coverUrl);
+
             }
 
             @Override public void onSuccess(LiveRoom liveRoom) {
