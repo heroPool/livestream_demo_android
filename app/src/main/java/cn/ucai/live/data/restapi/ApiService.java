@@ -1,12 +1,12 @@
 package cn.ucai.live.data.restapi;
 
+import java.util.List;
+
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.model.User;
 import cn.ucai.live.data.restapi.model.GrantAdminModule;
 import cn.ucai.live.data.restapi.model.LiveStatusModule;
 import cn.ucai.live.data.restapi.model.ResponseModule;
-import java.util.List;
-
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -21,7 +21,7 @@ import retrofit2.http.Query;
  * Created by wei on 2017/2/14.
  */
 
-interface ApiService {
+interface   ApiService {
     @POST("liverooms?status=ongoing")
     Call<ResponseModule<LiveRoom>> createLiveRoom(@Body LiveRoom module);
 

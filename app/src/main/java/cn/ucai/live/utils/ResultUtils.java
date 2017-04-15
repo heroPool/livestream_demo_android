@@ -19,13 +19,13 @@ import cn.ucai.live.I;
  * Created by clawpo on 2016/9/21.
  */
 public class ResultUtils {
-    public static <T> Result getResultFromJson(String jsonStr,Class<T> clazz){
-        Result result = new Result();
+    public static <T> Result<T> getResultFromJson(String jsonStr, Class<T> clazz) {
+        Result<T> result = new Result<T>();
         try {
             JSONObject jsonObject = new JSONObject(jsonStr);
             result.setRetCode(jsonObject.getInt("retCode"));
             result.setRetMsg(jsonObject.getBoolean("retMsg"));
-            if(!jsonObject.isNull("retData")) {
+            if (!jsonObject.isNull("retData")) {
                 JSONObject jsonRetData = jsonObject.getJSONObject("retData");
                 if (jsonRetData != null) {
                     Log.e("Utils", "jsonRetData=" + jsonRetData);
@@ -46,20 +46,20 @@ public class ResultUtils {
                 }
             }
             return result;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return  null;
+        return null;
     }
 
-    public static <T> Result getListResultFromJson(String jsonStr, Class<T> clazz){
-        Result result = new Result();
-        Log.e("Utils","jsonStr="+jsonStr);
+    public static <T> Result<List<T>> getListResultFromJson(String jsonStr, Class<T> clazz) {
+        Result<List<T>> result = new Result<List<T>>();
+        Log.e("Utils", "jsonStr=" + jsonStr);
         try {
             JSONObject jsonObject = new JSONObject(jsonStr);
             result.setRetCode(jsonObject.getInt("retCode"));
             result.setRetMsg(jsonObject.getBoolean("retMsg"));
-            if(!jsonObject.isNull("retData")) {
+            if (!jsonObject.isNull("retData")) {
                 JSONArray array = jsonObject.getJSONArray("retData");
                 if (array != null) {
                     List<T> list = new ArrayList<T>();
@@ -73,10 +73,10 @@ public class ResultUtils {
                 }
             }
             return result;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return  null;
+        return null;
     }
 
 //    public static <T> Result getPageResultFromJson(String jsonStr,Class<T> clazz){

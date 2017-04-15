@@ -2,14 +2,15 @@ package cn.ucai.live.data;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.domain.User;
 
 import java.io.File;
+import java.io.IOException;
 
 import cn.ucai.live.I;
+import cn.ucai.live.data.restapi.ApiManager;
 import cn.ucai.live.net.IUserRegisterModel;
 import cn.ucai.live.net.OnCompleteListener;
 import cn.ucai.live.net.UserRegisterModel;
@@ -112,29 +113,43 @@ public class UserProfileManager {
     }
 
     public void asyncGetAppCurrentUserInfo() {
-        userRegisterModel.loadUserInfo(appContext, EMClient.getInstance().getCurrentUser(), new OnCompleteListener<String>() {
+        new Thread(new Runnable() {
             @Override
-            public void onSuccess(String result) {
-                if (result != null) {
-                    Result resultFromJson = ResultUtils.getResultFromJson(result, User.class);
-                    if (resultFromJson != null && resultFromJson.isRetMsg()) {
-                        User user = (User) resultFromJson.getRetData();
-                        Log.i("UserProfileManager", user.toString());
-                        if (user != null) {
-                            updateCurrentAppUserInfo(user);
-                        }
-//                        setCurrentAppUserNick(user.getMUserNick());
-//                        setCurrentAppUserAvatar(user.getAvatar());
-//                        LiveHelper.getInstance().saveAppContact(user);
+            public void run() {
+                try {
+                    User user = ApiManager.get().loadUserInfo(EMClient.getInstance().getCurrentUser());
+                    if (user != null) {
+                        updateCurrentAppUserInfo(user);
+
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
+        }).start();
+//        userRegisterModel.loadUserInfo(appContext, EMClient.getInstance().getCurrentUser(), new OnCompleteListener<String>() {
+//            @Override
+//            public void onSuccess(String result) {
+//                if (result != null) {
+//                    Result resultFromJson = ResultUtils.getResultFromJson(result, User.class);
+//                    if (resultFromJson != null && resultFromJson.isRetMsg()) {
+//                        User user = (User) resultFromJson.getRetData();
+//                        Log.i("UserProfileManager", user.toString());
+//                        if (user != null) {
+//                            updateCurrentAppUserInfo(user);
+//                        }
+////                        setCurrentAppUserNick(user.getMUserNick());
+////                        setCurrentAppUserAvatar(user.getAvatar());
+////                        LiveHelper.getInstance().saveAppContact(user);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onError(String error) {
+//
+//            }
+//        });
     }
 
     public void updateCurrentAppUserInfo(User user) {

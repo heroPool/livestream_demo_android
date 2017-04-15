@@ -1,19 +1,18 @@
-package cn.ucai.live.utils;
+package cn.ucai.live.data.model;
 
 import java.io.Serializable;
 
-public class Result<T> implements Serializable {
+public class Result implements Serializable {
 	private int retCode = -1;
 	private boolean retMsg;
-	private T retData;
-
+	private Object retData;
 	public Result() {
 	}
 	public Result(boolean retMsg, int retCode){
 		this.retMsg = retMsg;
 		this.retCode = retCode;
 	}
-	public Result(int retCode, boolean retMsg, T retData) {
+	public Result(int retCode, boolean retMsg, Object retData) {
 		super();
 		this.retCode = retCode;
 		this.retMsg = retMsg;
@@ -31,10 +30,10 @@ public class Result<T> implements Serializable {
 	public void setRetMsg(boolean retMsg) {
 		this.retMsg = retMsg;
 	}
-	public T getRetData() {
+	public Object getRetData() {
 		return retData;
 	}
-	public void setRetData(T retData) {
+	public void setRetData(Object retData) {
 		this.retData = retData;
 	}
 	@Override
