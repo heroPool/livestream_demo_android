@@ -25,9 +25,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.live.ThreadPoolManager;
-import cn.ucai.live.data.model.Gift;
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.ApiManager;
+import cn.ucai.live.data.restapi.LiveException;
 import cn.ucai.live.data.restapi.model.ResponseModule;
 import cn.ucai.live.ui.GridMarginDecoration;
 
@@ -65,80 +65,85 @@ public class LiveListFragment extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.refresh_layout);
         showLiveList(false);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override public void onRefresh() {
+            @Override
+            public void onRefresh() {
                 showLiveList(false);
             }
         });
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(newState == RecyclerView.SCROLL_STATE_IDLE
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
                         && hasMoreData
                         && !isLoading
-                        && glm.findLastVisibleItemPosition() == glm.getItemCount() -1){
+                        && glm.findLastVisibleItemPosition() == glm.getItemCount() - 1) {
                     showLiveList(true);
                 }
             }
         });
 
     }
+
     private void loadGiftList() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<Gift> list= ApiManager.get().getAllG
-                ifts();
-            }
-        }).start();
+        try {
+            ApiManager.get().getAllGifts();
+        } catch (LiveException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void showLiveList(final boolean isLoadMore){
-        if(!isLoadMore)
+    private void showLiveList(final boolean isLoadMore) {
+        if (!isLoadMore)
             swipeRefreshLayout.setRefreshing(true);
         else
             loadmorePB.setVisibility(View.VISIBLE);
         isLoading = true;
+        loadGiftList();
         ThreadPoolManager.getInstance().executeTask(new ThreadPoolManager.Task<ResponseModule<List<LiveRoom>>>() {
-            @Override public ResponseModule<List<LiveRoom>> onRequest() throws HyphenateException {
-                if(!isLoadMore){
+            @Override
+            public ResponseModule<List<LiveRoom>> onRequest() throws HyphenateException {
+                if (!isLoadMore) {
                     cursor = null;
                 }
                 return ApiManager.get().getLivingRoomList(pageSize, cursor);
             }
 
-            @Override public void onSuccess(ResponseModule<List<LiveRoom>> listResponseModule) {
+            @Override
+            public void onSuccess(ResponseModule<List<LiveRoom>> listResponseModule) {
                 hideLoadingView(isLoadMore);
                 List<LiveRoom> returnList = listResponseModule.data;
-                if(returnList.size() < pageSize){
+                if (returnList.size() < pageSize) {
                     hasMoreData = false;
                     cursor = null;
-                }else{
+                } else {
                     hasMoreData = true;
                     cursor = listResponseModule.cursor;
                 }
 
-                if(!isLoadMore) {
+                if (!isLoadMore) {
                     liveRoomList.clear();
                 }
                 liveRoomList.addAll(returnList);
-                if(adapter == null){
+                if (adapter == null) {
                     adapter = new PhotoAdapter(getActivity(), liveRoomList);
                     recyclerView.setAdapter(adapter);
-                }else{
+                } else {
                     adapter.notifyDataSetChanged();
                 }
 
             }
 
-            @Override public void onError(HyphenateException exception) {
+            @Override
+            public void onError(HyphenateException exception) {
                 hideLoadingView(isLoadMore);
             }
         });
     }
 
-    private void hideLoadingView(boolean isLoadMore){
+    private void hideLoadingView(boolean isLoadMore) {
         isLoading = false;
-        if(!isLoadMore)
+        if (!isLoadMore)
             swipeRefreshLayout.setRefreshing(false);
         else
             loadmorePB.setVisibility(View.INVISIBLE);
@@ -149,10 +154,11 @@ public class LiveListFragment extends Fragment {
         private final List<LiveRoom> liveRoomList;
         private final Context context;
 
-        public PhotoAdapter(Context context, List<LiveRoom> liveRoomList){
+        public PhotoAdapter(Context context, List<LiveRoom> liveRoomList) {
             this.liveRoomList = liveRoomList;
             this.context = context;
         }
+
         @Override
         public PhotoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             final PhotoViewHolder holder = new PhotoViewHolder(LayoutInflater.from(context).
@@ -192,7 +198,8 @@ public class LiveListFragment extends Fragment {
         ImageView imageView;
         @BindView(R.id.author)
         TextView anchor;
-        @BindView(R.id.audience_num) TextView audienceNum;
+        @BindView(R.id.audience_num)
+        TextView audienceNum;
 
         public PhotoViewHolder(View itemView) {
             super(itemView);

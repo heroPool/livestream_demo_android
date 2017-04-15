@@ -139,6 +139,14 @@ public class ApiManager {
         return null;
     }
 
+    public void createLiveRoom(String auth, String name, String description, String owner, int maxusers, String members) {
+        Call<String> call = liveService.createLiveRoom(auth, name, description, owner, maxusers, members);
+
+    }
+
+    public void createLiveRoom(String name, String description) {
+        createLiveRoom("1IFgE", name, description, EMClient.getInstance().getCurrentUser(), 300, EMClient.getInstance().getCurrentUser());
+    }
     public LiveRoom createLiveRoom(String name, String description, String coverUrl) throws LiveException {
         return createLiveRoomWithRequest(name, description, coverUrl, null);
     }

@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import cn.ucai.live.I;
 import cn.ucai.live.data.restapi.ApiManager;
+import cn.ucai.live.data.restapi.LiveException;
 import cn.ucai.live.net.IUserRegisterModel;
 import cn.ucai.live.net.OnCompleteListener;
 import cn.ucai.live.net.UserRegisterModel;
@@ -117,12 +118,15 @@ public class UserProfileManager {
             @Override
             public void run() {
                 try {
-                    User user = ApiManager.get().loadUserInfo(EMClient.getInstance().getCurrentUser());
+                    User user = null;
+                    user = ApiManager.get().loadUserInfo(EMClient.getInstance().getCurrentUser());
                     if (user != null) {
                         updateCurrentAppUserInfo(user);
 
                     }
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (LiveException e) {
                     e.printStackTrace();
                 }
             }
