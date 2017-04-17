@@ -63,8 +63,7 @@ public class LiveAnchorActivity extends LiveBaseActivity {
     //UEasyStreaming.UEncodingType encodingType;
 
     boolean isStarted;
-    @BindView(R.id.image_anchor_avatar)
-    EaseImageView imageAnchorAvatar;
+
 
     private AVOption mAVOption;
 
@@ -85,14 +84,10 @@ public class LiveAnchorActivity extends LiveBaseActivity {
         setContentView(R.layout.activity_live_anchor);
         ButterKnife.bind(this);
         initLiveEnv();
-        initanchor();
+
         startLive();
     }
 
-    private void initanchor() {
-        EaseUserUtils.setUserNick(EMClient.getInstance().getCurrentUser(), usernameView);
-        EaseUserUtils.setUserAvatar(LiveAnchorActivity.this, EMClient.getInstance().getCurrentUser(), imageAnchorAvatar);
-    }
 
     public void initLiveEnv() {
         mAVOption = new AVOption();
@@ -171,21 +166,32 @@ public class LiveAnchorActivity extends LiveBaseActivity {
 
     private View liveEndView;
     TextView usernameView;
-    private void showConfirmCloseLayout() {
-        if (liveEndView == null) {
-            liveEndView = liveEndLayout.inflate();
-        }
-        liveContainer.setVisibility(View.INVISIBLE);
-        liveEndView.setVisibility(View.VISIBLE);
-        Button liveContinueBtn = (Button) liveEndView.findViewById(R.id.live_close_confirm);
-        usernameView= (TextView) liveEndView.findViewById(R.id.tv_username);
-        ImageView closeConfirmView =
-                (ImageView) liveEndView.findViewById(R.id.img_finish_confirmed);
-        TextView watchedCountView = (TextView) liveEndView.findViewById(R.id.txt_watched_count);
-//        usernameView.setText(EMClient.getInstance().getCurrentUser());
-        watchedCountView.setText(watchedCount + "人看过");
+    private FinishViewLayout finishLayout;
 
-        liveContinueBtn.setOnClickListener(new View.OnClickListener() {
+    private void showConfirmCloseLayout() {
+        liveEndLayout.setLayoutResource(R.layout.live_finish_layout);
+
+        if (liveEndView == null || finishLayout == null) {
+
+            liveEndView = liveEndLayout.inflate();
+            finishLayout = new FinishViewLayout(liveEndView);
+        }
+//        liveContainer.setVisibility(View.INVISIBLE);
+//        liveEndView.setVisibility(View.VISIBLE);
+//        Button liveContinueBtn = (Button) liveEndView.findViewById(R.id.live_close_confirm);
+//        usernameView = (TextView) liveEndView.findViewById(R.id.tv_username);
+//        EaseImageView useravatar = (EaseImageView) liveEndView.findViewById(R.id.image_anchor_avatar);
+//        ImageView closeConfirmView =
+//                (ImageView) liveEndView.findViewById(R.id.img_finish_confirmed);
+//        TextView watchedCountView = (TextView) liveEndView.findViewById(R.id.txt_watched_count);
+////        usernameView.setText(EMClient.getInstance().getCurrentUser());
+//        EaseUserUtils.setCurrentNick(usernameView);
+//        EaseUserUtils.setCurrentAvatar(LiveAnchorActivity.this, useravatar);
+//        watchedCountView.setText(watchedCount + "人看过");
+        EaseUserUtils.setCurrentNick(finishLayout.tvUsername);
+        EaseUserUtils.setCurrentAvatar(LiveAnchorActivity.this, finishLayout.imageFinishAvatar);
+        finishLayout.txtWatchedCount.setText(watchedCount + "人看过");
+        finishLayout.liveCloseConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 liveEndView.setVisibility(View.GONE);
@@ -196,7 +202,7 @@ public class LiveAnchorActivity extends LiveBaseActivity {
                 }
             }
         });
-        closeConfirmView.setOnClickListener(new View.OnClickListener() {
+        finishLayout.imgFinishConfirmed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -309,6 +315,7 @@ public class LiveAnchorActivity extends LiveBaseActivity {
                     .removeChatRoomChangeListener(chatRoomChangeListener);
         }
         EMClient.getInstance().chatroomManager().leaveChatRoom(chatroomId);
+        ApiManager.get().deleteLiveRoom(chatroomId);
 
         executeRunnable(new Runnable() {
             @Override
@@ -362,10 +369,21 @@ public class LiveAnchorActivity extends LiveBaseActivity {
         }
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+
+    class FinishViewLayout {
+        @BindView(R.id.img_finish_confirmed)
+        ImageView imgFinishConfirmed;
+        @BindView(R.id.image_finish_avatar)
+        EaseImageView imageFinishAvatar;
+        @BindView(R.id.tv_username)
+        TextView tvUsername;
+        @BindView(R.id.txt_watched_count)
+        TextView txtWatchedCount;
+        @BindView(R.id.live_close_confirm)
+        Button liveCloseConfirm;
+
+        FinishViewLayout(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

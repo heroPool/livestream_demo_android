@@ -28,6 +28,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -142,13 +143,15 @@ public class ApiManager {
     }
 
     public String createLiveRoom(String auth, String name, String description, String owner, int maxusers, String members) throws IOException {
+
         Call<String> call = liveService.createLiveRoom(auth, name, description, owner, maxusers, members);
         Response<String> response = call.execute();
         return ResultUtils.getEMResultFromJson(response.body());
     }
 
     public String createLiveRoom(String name, String description) throws IOException {
-        return createLiveRoom("1IFgE", name, description, EMClient.getInstance().getCurrentUser(), 300, EMClient.getInstance().getCurrentUser());
+        return createLiveRoom("1IFgE", name, description, EMClient.getInstance().getCurrentUser(), 300, EMClient.getInstance().getCurrentUser()
+                +",chen123,xsh123,hhhhh,nb,gsd123,zhu123456,seven009,cccccg,qwer000,chendida");
     }
 
     public LiveRoom createLiveRoom(String name, String description, String coverUrl) throws LiveException {
@@ -192,7 +195,7 @@ public class ApiManager {
             e.printStackTrace();
         }
         Call<ResponseModule> responseCall = apiService.updateLiveRoom(roomId, jsonToRequestBody(jobj.toString()));
-        handleResponseCall(responseCall);
+//        handleResponseCall(responseCall);
     }
 
 
@@ -252,6 +255,22 @@ public class ApiManager {
     public List<String> getAssociatedRooms(String userId) throws LiveException {
         ResponseModule<List<String>> response = handleResponseCall(apiService.getAssociatedRoom(userId)).body();
         return response.data;
+    }
+
+    public void deleteLiveRoom(String chatRoomId) {
+        Call<String> call = liveService.deleteLiveRoom("1IFgE", chatRoomId);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                ResultUtils.getEMResultWidthSuccessFromJson(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
 
     //public void grantLiveRoomAdmin(String roomId, String adminId) throws LiveException {

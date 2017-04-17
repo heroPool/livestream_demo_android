@@ -96,6 +96,23 @@ public class ResultUtils {
         }
         return null;
     }
+
+    public static boolean getEMResultWidthSuccessFromJson(String jsonStr) {
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(jsonStr);
+            if (!jsonObject.isNull("data")) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                if (!data.isNull("success")) {
+                    return data.getBoolean("success");
+                }
+            }
+            return false;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 //    public static <T> Result getPageResultFromJson(String jsonStr,Class<T> clazz){
 //        Result result = new Result();
 //        try {
