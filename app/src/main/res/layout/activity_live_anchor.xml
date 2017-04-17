@@ -101,7 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="310dp"
             android:layout_alignParentBottom="true"
-            ></RelativeLayout>
+            />
     </RelativeLayout>
     <ViewStub
         android:id="@+id/finish_frame"

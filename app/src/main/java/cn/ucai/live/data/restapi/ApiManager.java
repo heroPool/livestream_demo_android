@@ -67,13 +67,15 @@ public class ApiManager {
                 .client(httpClient)
                 .build();
 
-
         apiService = retrofit.create(ApiService.class);
+
+        //
         Retrofit liveRetrofit = new Retrofit.Builder()
                 .baseUrl(I.SERVER_ROOT)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .client(httpClient)
                 .build();
+
         liveService = liveRetrofit.create(LiveService.class);
 
     }

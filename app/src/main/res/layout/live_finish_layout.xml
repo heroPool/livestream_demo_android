@@ -26,6 +26,7 @@
         />
 
     <com.hyphenate.easeui.widget.EaseImageView
+        android:id="@+id/image_finish_avatar"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/ease_default_avatar"
