@@ -34,6 +34,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.live.I;
 import cn.ucai.live.LiveConstants;
 import cn.ucai.live.ThreadPoolManager;
 import cn.ucai.live.data.TestAvatarRepository;
@@ -43,6 +44,7 @@ import cn.ucai.live.data.restapi.LiveException;
 import cn.ucai.live.data.restapi.model.StatisticsType;
 import cn.ucai.live.ui.widget.PeriscopeLayout;
 import cn.ucai.live.ui.widget.RoomMessagesView;
+import cn.ucai.live.utils.PreferenceManager;
 import cn.ucai.live.utils.Utils;
 
 /**
@@ -128,8 +130,14 @@ public abstract class LiveBaseActivity extends BaseActivity {
     protected abstract void onActivityCreate(@Nullable Bundle savedInstanceState);
 
     private void initanchor() {
-        EaseUserUtils.setUserNick(EMClient.getInstance().getCurrentUser(), usernameView);
-        EaseUserUtils.setAppUserAvatar(LiveBaseActivity.this, EMClient.getInstance().getCurrentUser(), ivAnchorAvatar);
+        if (anchorId.equals(EMClient.getInstance().getCurrentUser())) {
+            EaseUserUtils.setUserNick(EMClient.getInstance().getCurrentUser(), usernameView);
+            EaseUserUtils.setAppUserAvatar(LiveBaseActivity.this, EMClient.getInstance().getCurrentUser(), ivAnchorAvatar);
+        } else {
+            usernameView.setText(anchorId);
+            EaseUserUtils.setAppUserAvatar(LiveBaseActivity.this, anchorId, ivAnchorAvatar);
+        }
+
     }
 
     protected void showPraise(final int count) {
@@ -324,6 +332,8 @@ public abstract class LiveBaseActivity extends BaseActivity {
                         //    barrageLayout.addBarrage(content,
                         //            EMClient.getInstance().getCurrentUser());
                         //}
+                        message.setAttribute(I.User.NICK, PreferenceManager.getInstance().getCurrentUserNick());
+
                         message.setChatType(EMMessage.ChatType.ChatRoom);
                         EMClient.getInstance().chatManager().sendMessage(message);
                         message.setMessageStatusCallback(new EMCallBack() {

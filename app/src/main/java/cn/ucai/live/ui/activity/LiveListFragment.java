@@ -27,6 +27,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.ucai.live.LiveConstants;
 import cn.ucai.live.ThreadPoolManager;
 import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.ApiManager;
@@ -158,6 +159,9 @@ public class LiveListFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            swipeRefreshLayout.setRefreshing(false);
+                            liveRoomList.clear();
+
                             if (chatRooms != null && chatRooms.size() > 0) {
                                 for (EMChatRoom room : chatRooms) {
                                   LiveRoom liveRoom=  chatRoom2liveRoom(room);
@@ -198,7 +202,8 @@ public class LiveListFragment extends Fragment {
                 String name = room.getName().substring(0, index);
                 String cover = room.getName().substring(index + s.length());
                 liveRoom.setName(name);
-                liveRoom.setCover("https://a1.easemob.com/i/superwechat201612/chatfiles/" + cover);
+                liveRoom.setCover(LiveConstants.LIVE_COVER_PREFIX + cover);
+
             } else {
                 liveRoom.setName(room.getName());
 

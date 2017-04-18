@@ -20,7 +20,6 @@ import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.model.LiveStatusModule;
 import cn.ucai.live.data.restapi.model.ResponseModule;
 import cn.ucai.live.data.restapi.model.StatisticsType;
-import cn.ucai.live.ucloud.AVOption;
 import cn.ucai.live.utils.Result;
 import cn.ucai.live.utils.ResultUtils;
 import okhttp3.Interceptor;
@@ -151,8 +150,9 @@ public class ApiManager {
     }
 
     public String createLiveRoom(String name, String description) throws IOException {
-        return createLiveRoom("1IFgE", name, description, EMClient.getInstance().getCurrentUser(), 300, EMClient.getInstance().getCurrentUser()
-                +",chen123,xsh123,hhhhh,nb,gsd123,zhu123456,seven009,cccccg,qwer000,chendida");
+        return createLiveRoom("1IFgE", name, description,
+                EMClient.getInstance().getCurrentUser(), 300, EMClient.getInstance().getCurrentUser()
+        );
     }
 
     public LiveRoom createLiveRoom(String name, String description, String coverUrl) throws LiveException {
@@ -178,8 +178,8 @@ public class ApiManager {
             if (id != null) {
                 liveRoom.setId(id);
                 liveRoom.setChatroomId(id);
-                liveRoom.setLivePullUrl(AVOption.pullUrl);
-                liveRoom.setLivePushUrl(AVOption.pushUrl);
+                liveRoom.setLivePullUrl(liveRoom.getLivePullUrl());
+                liveRoom.setLivePushUrl(liveRoom.getLivePushUrl());
 
             } else {
                 liveRoom.setId(liveRoomId);

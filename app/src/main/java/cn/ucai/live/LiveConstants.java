@@ -24,6 +24,8 @@ public class LiveConstants extends EaseConstant{
     public static final String ACTION_GROUP_CHANAGED = "action_group_changed";
     public static final String ACTION_CONTACT_CHANAGED = "action_contact_changed";
 
+    public static final String LIVE_COVER_PREFIX = "https://a1.easemob.com/i/superwechat201612/chatfiles/";
+    public static final String LIVE_COVER = "#live201612";
 
 }
 
