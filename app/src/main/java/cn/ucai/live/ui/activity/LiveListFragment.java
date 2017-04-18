@@ -17,6 +17,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.easemob.livedemo.R;
+import com.hyphenate.chat.EMChatRoom;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMPageResult;
 import com.hyphenate.exceptions.HyphenateException;
 
 import java.util.ArrayList;
@@ -93,6 +96,9 @@ public class LiveListFragment extends Fragment {
 //    }
 
     private void showLiveList(final boolean isLoadMore) {
+        if (getChatRoom()) {
+            return;
+        }
         if (!isLoadMore)
             swipeRefreshLayout.setRefreshing(true);
         else
@@ -139,6 +145,59 @@ public class LiveListFragment extends Fragment {
         });
     }
 
+    private boolean getChatRoom() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int pageCount = -1;
+                EMPageResult<EMChatRoom> result;
+                try {
+                    result = EMClient.getInstance().chatroomManager().fetchPublicChatRoomsFromServer(0, 20);
+                    final List<EMChatRoom> chatRooms = result.getData();
+                     pageCount = result.getPageCount();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (chatRooms != null && chatRooms.size() > 0) {
+                                for (EMChatRoom room : chatRooms) {
+                                  LiveRoom liveRoom=  chatRoom2liveRoom(room);
+                                    if (liveRoom != null) {
+                                        liveRoomList.add(liveRoom);
+                                    }
+                                }
+                                if (adapter == null) {
+                                    adapter = new PhotoAdapter(getActivity(), liveRoomList);
+                                    recyclerView.setAdapter(adapter);
+
+                                } else {
+                                    adapter.notifyDataSetChanged();
+
+                                }
+                            }
+                        }
+                    });
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        return true;
+    }
+
+    private LiveRoom chatRoom2liveRoom(EMChatRoom room) {
+        LiveRoom liveRoom = null;
+        if (room != null) {
+            liveRoom = new LiveRoom();
+            liveRoom.setId(room.getOwner());
+            liveRoom.setChatroomId(room.getId());
+            liveRoom.setName(room.getName());
+            liveRoom.setDescription(room.getDescription());
+            liveRoom.setAnchorId(room.getOwner());
+            liveRoom.setAudienceNum(room.getMemberCount());
+
+        }
+        return liveRoom;
+    }
     private void hideLoadingView(boolean isLoadMore) {
         isLoading = false;
         if (!isLoadMore)

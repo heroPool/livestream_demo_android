@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,6 +81,7 @@ public class RoomUserDetailsDialog extends DialogFragment {
             chatroomId = liveRoom.getChatroomId();
             liveId = liveRoom.getId();
 
+            Log.e(RoomUserDetailsDialog.class.getSimpleName(), "chatroomId=" + chatroomId + "---liveId=" + liveId);
             EMChatRoom chatRoom = EMClient.getInstance().chatroomManager().getChatRoom(chatroomId);
             List<String> adminList = chatRoom.getAdminList();
             if (!EMClient.getInstance().getCurrentUser().equals(chatRoom.getOwner())) {
@@ -175,6 +177,7 @@ public class RoomUserDetailsDialog extends DialogFragment {
                                     eventListener.onKickMember(username);
                                 }
                                 showToast("踢出成功");
+
                             }
 
                             @Override

@@ -42,9 +42,10 @@ public class EaseUserUtils {
      */
     public static void setUserAvatar(Context context, String username, ImageView imageView) {
         EaseUser user = getUserInfo(username);
+        Log.e("EaseUserUtils.class", "setUserAvatar()执行" + "   user=" + user.toString());
 
         if (user != null && user.getAvatar() != null) {
-            Log.e("EaseUserUtils.class", user.getAvatar());
+            Log.e("EaseUserUtils.class", "user.getAvatar()=" + user.getAvatar());
             try {
                 int avatarResId = Integer.parseInt(user.getAvatar());
                 Glide.with(context).load(avatarResId).into(imageView);
@@ -56,6 +57,8 @@ public class EaseUserUtils {
             Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
         }
     }
+
+
 
     /**
      * set user's nickname
@@ -74,20 +77,23 @@ public class EaseUserUtils {
     public static void setCurrentNick(TextView textView) {
         setAppUserNick(EMClient.getInstance().getCurrentUser(), textView);
     }
+
     /**
      * get User according username
+     *
      * @param username
      * @return
      */
-    public static User getAppUserInfo(String username){
-        if(userProvider != null)
+    public static User getAppUserInfo(String username) {
+        if (userProvider != null)
             return userProvider.getAppUser(username);
 
         return null;
     }
-    private static void setAppUserNick(String username, TextView textView) {
+
+    public static void setAppUserNick(String username, TextView textView) {
         if (textView != null) {
-            User user=getAppUserInfo(username);
+            User user = getAppUserInfo(username);
             setAppUserNick(user, textView);
         }
     }
@@ -105,17 +111,16 @@ public class EaseUserUtils {
     }
 
 
-
     public static void setCurrentAvatar(Context context, ImageView imageView) {
         setAppUserAvatar(context, EMClient.getInstance().getCurrentUser(), imageView);
     }
 
-    private static void setAppUserAvatar(Context context, String username, ImageView imageView) {
+    public static void setAppUserAvatar(Context context, String username, ImageView imageView) {
         User user = getAppUserInfo(username);
         setAppUserAvatar(context, user, imageView);
     }
 
-    private static void setAppUserAvatar(Context context, User user, ImageView imageView) {
+    public static void setAppUserAvatar(Context context, User user, ImageView imageView) {
         if (user != null) {
             setUserAvatar(context, user.getAvatar(), imageView);
         } else {
