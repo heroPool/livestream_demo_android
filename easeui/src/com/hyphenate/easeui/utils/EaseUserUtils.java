@@ -1,7 +1,6 @@
 package com.hyphenate.easeui.utils;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,7 +37,6 @@ public class EaseUserUtils {
     /**
      * set user avatar
      *
-     * @param username
      */
     public static void setUserAvatar(Context context, String avatarPath, ImageView imageView) {
 

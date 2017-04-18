@@ -171,6 +171,9 @@ public class ApiManager {
 
         try {
             String id = createLiveRoom(name, description);
+            String cover = coverUrl.substring(coverUrl.lastIndexOf("/") + 1);
+            String nameCover = name + "#live201612#" + cover;
+
             if (id != null) {
                 liveRoom.setId(id);
                 liveRoom.setChatroomId(id);

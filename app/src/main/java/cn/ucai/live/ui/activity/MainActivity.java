@@ -41,6 +41,7 @@ public class MainActivity extends BaseActivity {
         startActivity(new Intent(this, CreateLiveRoomActivity.class));
     }
 
+
     @OnClick(R.id.txt_logout)
     void logout() {
         LiveHelper.getInstance().logout(false, new EMCallBack() {
