@@ -129,7 +129,7 @@ public abstract class LiveBaseActivity extends BaseActivity {
 
     private void initanchor() {
         EaseUserUtils.setUserNick(EMClient.getInstance().getCurrentUser(), usernameView);
-        EaseUserUtils.setUserAvatar(LiveBaseActivity.this, EMClient.getInstance().getCurrentUser(), ivAnchorAvatar);
+        EaseUserUtils.setAppUserAvatar(LiveBaseActivity.this, EMClient.getInstance().getCurrentUser(), ivAnchorAvatar);
     }
 
     protected void showPraise(final int count) {
@@ -389,16 +389,19 @@ public abstract class LiveBaseActivity extends BaseActivity {
     }
 
     private void showUserDetailsDialog(String username) {
-        RoomUserDetailsDialog dialog = RoomUserDetailsDialog.newInstance(username, liveRoom);
+        final RoomUserDetailsDialog dialog = RoomUserDetailsDialog.newInstance(username, liveRoom);
         dialog.setManageEventListener(new RoomUserDetailsDialog.RoomManageEventListener() {
             @Override
             public void onKickMember(String username) {
                 onRoomMemberExited(username);
+                dialog.dismiss();
+
             }
 
             @Override
             public void onAddBlacklist(String username) {
                 onRoomMemberExited(username);
+                dialog.dismiss();
             }
         });
         dialog.show(getSupportFragmentManager(), "RoomUserDetailsDialog");
@@ -461,11 +464,11 @@ public abstract class LiveBaseActivity extends BaseActivity {
 
             @Override
             public void onSuccess(Void aVoid) {
-                int size = chatroom.getMemberCount();
+                int size = chatroom.getMemberCount() - 1;
                 audienceNumView.setText(String.valueOf(size));
                 membersCount = size;
                 //观看人数不包含主播
-                watchedCount = membersCount - 1;
+                watchedCount = membersCount;
                 notifyDataSetChanged();
             }
 
@@ -506,19 +509,20 @@ public abstract class LiveBaseActivity extends BaseActivity {
     }
 
     private synchronized void onRoomMemberExited(final String name) {
-        memberList.remove(name);
-        membersCount--;
-        EMLog.e(TAG, name + "exited");
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                audienceNumView.setText(String.valueOf(membersCount));
-                horizontalRecyclerView.getAdapter().notifyDataSetChanged();
-                if (name.equals(anchorId)) {
-                    showLongToast("主播已结束直播");
+        if (memberList.remove(name)) {
+            membersCount--;
+            EMLog.e(TAG, name + "exited");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    audienceNumView.setText(String.valueOf(membersCount));
+                    horizontalRecyclerView.getAdapter().notifyDataSetChanged();
+                    if (name.equals(anchorId)) {
+                        showLongToast("主播已结束直播");
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     protected void postUserChangeEvent(final StatisticsType type, final String username) {
