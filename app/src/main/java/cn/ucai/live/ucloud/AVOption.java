@@ -16,4 +16,5 @@ public class AVOption {
     public int videoFilterMode = StreamProfileUtil.AVOptionsHolder.DefaultVideoRenderMode;
     public int cameraIndex = StreamProfileUtil.AVOptionsHolder.DefaultCameraIndex;
     public String streamUrl = "rtmp://publish3.cdn.ucloud.com.cn/ucloud/demo";
+
 }

@@ -12,17 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.easemob.livedemo.R;
-import cn.ucai.live.ThreadPoolManager;
 import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMChatRoomManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import cn.ucai.live.ThreadPoolManager;
 
 import static cn.ucai.live.ui.activity.RoomUserManagementFragment.ManagementType.ADMIN;
 import static cn.ucai.live.ui.activity.RoomUserManagementFragment.ManagementType.MUTE;
