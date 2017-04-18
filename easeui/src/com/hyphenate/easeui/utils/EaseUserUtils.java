@@ -40,18 +40,17 @@ public class EaseUserUtils {
      *
      * @param username
      */
-    public static void setUserAvatar(Context context, String username, ImageView imageView) {
-        EaseUser user = getUserInfo(username);
-        Log.e("EaseUserUtils.class", "setUserAvatar()执行" + "   user=" + user.toString());
+    public static void setUserAvatar(Context context, String avatarPath, ImageView imageView) {
 
-        if (user != null && user.getAvatar() != null) {
-            Log.e("EaseUserUtils.class", "user.getAvatar()=" + user.getAvatar());
+
+        if (avatarPath!=null) {
+
             try {
-                int avatarResId = Integer.parseInt(user.getAvatar());
+                int avatarResId = Integer.parseInt(avatarPath);
                 Glide.with(context).load(avatarResId).into(imageView);
             } catch (Exception e) {
                 //use default avatar
-                Glide.with(context).load(user.getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ease_default_avatar).into(imageView);
+                Glide.with(context).load(avatarPath).diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ease_default_avatar).into(imageView);
             }
         } else {
             Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
