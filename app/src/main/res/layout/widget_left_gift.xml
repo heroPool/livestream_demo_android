@@ -32,8 +32,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                >
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/name"
@@ -44,24 +43,39 @@
                     android:textColor="#fff" />
 
                 <ImageView
-                    android:layout_marginLeft="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    />
+                    android:layout_marginLeft="4dp" />
 
             </LinearLayout>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:text="送了一个校园之星"
-                android:textColor="#4d73ff" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:text="送了一个"
+                    android:textColor="#4d73ff" />
+
+                <TextView
+                    android:id="@+id/gift_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:text="校园之星"
+                    android:textColor="#4d73ff" />
+            </LinearLayout>
+
+
 
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/gift_image"
+            android:id="@+id/iv_gift_image"
             android:layout_width="38dp"
             android:layout_height="38dp"
             android:layout_gravity="center_vertical"

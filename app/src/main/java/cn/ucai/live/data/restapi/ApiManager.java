@@ -20,7 +20,6 @@ import cn.ucai.live.data.model.LiveRoom;
 import cn.ucai.live.data.restapi.model.LiveStatusModule;
 import cn.ucai.live.data.restapi.model.ResponseModule;
 import cn.ucai.live.data.restapi.model.StatisticsType;
-import cn.ucai.live.ucloud.AVOption;
 import cn.ucai.live.utils.Result;
 import cn.ucai.live.utils.ResultUtils;
 import okhttp3.Interceptor;
@@ -175,8 +174,7 @@ public class ApiManager {
             if (id != null) {
                 liveRoom.setId(id);
                 liveRoom.setChatroomId(id);
-                liveRoom.setLivePullUrl(AVOption.pullUrl);
-                liveRoom.setLivePushUrl(AVOption.pushUrl);
+
 
             } else {
                 liveRoom.setId(liveRoomId);
@@ -252,7 +250,7 @@ public class ApiManager {
         return response;
     }
 
-    public LiveRoom getLiveRoomDetails(String roomId) throws LiveException {
+     public LiveRoom getLiveRoomDetails(String roomId) throws LiveException {
         return handleResponseCall(apiService.getLiveRoomDetails(roomId)).body().data;
     }
 

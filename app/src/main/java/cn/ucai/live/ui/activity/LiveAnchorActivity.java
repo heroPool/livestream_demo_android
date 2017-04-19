@@ -106,6 +106,7 @@ public class LiveAnchorActivity extends LiveBaseActivity {
 
     private void stopPreview() {
         cameraView.stopRecordingAndDismissPreview();
+
     }
 
     @Override

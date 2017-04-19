@@ -4,8 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import cn.ucai.live.ucloud.AVOption;
-
 /**
  * Created by wei on 2016/5/27.
  */
@@ -88,7 +86,7 @@ public class LiveRoom implements Serializable {
     }
 
     public String getLivePushUrl() {
-        return livePushUrl != null ? livePushUrl : AVOption.pushUrl;
+        return livePushUrl;
     }
 
     public void setLivePushUrl(String livePushUrl) {
@@ -96,7 +94,7 @@ public class LiveRoom implements Serializable {
     }
 
     public String getLivePullUrl() {
-        return livePullUrl!=null?livePullUrl:AVOption.pullUrl;
+        return livePullUrl;
     }
 
     public void setLivePullUrl(String livePullUrl) {

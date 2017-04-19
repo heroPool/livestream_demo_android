@@ -16,7 +16,11 @@ import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.util.EMLog;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +49,41 @@ public class LiveHelper {
     private LiveModel demoModel = null;
 
     private String username;
-    private Map<Integer, Gift> giftList;
+    private Map<Integer, Gift> giftMap;
+
+    public void setGiftMap(Map<Integer, Gift> giftMap) {
+        this.giftMap = giftMap;
+    }
+
+    public List<Gift> getGiftList() {
+        if (giftList == null) {
+            if (getGiftMap().size() > 0) {
+                giftList = new ArrayList<>();
+                Iterator<Map.Entry<Integer, Gift>> iterator = giftMap.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    giftList.add(iterator.next().getValue());
+                }
+                Collections.sort(giftList, new Comparator<Gift>() {
+                    @Override
+                    public int compare(Gift o1, Gift o2) {
+                        return o1.getGprice().compareTo(o2.getGprice());
+                    }
+
+                });
+
+            }
+        }
+        if (giftList == null) {
+            giftList = new ArrayList<>();
+        }
+        return giftList;
+    }
+
+    public void setGiftList(List<Gift> giftList) {
+        this.giftList = giftList;
+    }
+
+    private List<Gift> giftList;
     private Context appContext;
 
     private IUserRegisterModel userModel;
@@ -264,15 +302,15 @@ public class LiveHelper {
 
     }
 
-    public Map<Integer, Gift> getGiftList() {
-        if (giftList == null) {
-             giftList = demoModel.getGiftList();
+    public Map<Integer, Gift> getGiftMap() {
+        if (giftMap == null) {
+            giftMap = demoModel.getGiftList();
 
         }
-        if (giftList == null) {
-            giftList = new HashMap<Integer, Gift>();
+        if (giftMap == null) {
+            giftMap = new HashMap<Integer, Gift>();
         }
-        return giftList;
+        return giftMap;
     }
 
     public void syncLoadGiftList() {
@@ -286,7 +324,7 @@ public class LiveHelper {
                         demoModel.setGift(list);
                         //保存到缓存
                         for (Gift gift : list) {
-                            getGiftList().put(gift.getId(), gift);
+                            getGiftMap().put(gift.getId(), gift);
                         }
                     }
                 } catch (LiveException e) {
