@@ -26,7 +26,7 @@ public class LiveLeftGiftView extends RelativeLayout {
     EaseImageView avatar;
     @BindView(R.id.name)
     TextView name;
-    @BindView(R.id.gift_image)
+    @BindView(R.id.iv_gift_image)
     ImageView giftImage;
     @BindView(R.id.gift_name) TextView mGiftName;
     public LiveLeftGiftView(Context context) {
